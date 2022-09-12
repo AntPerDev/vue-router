@@ -3,38 +3,94 @@ import { createRouter, createWebHashHistory } from 'vue-router';
 const routes = [
   {
     path: '/',
-    component: () =>
-      import(
-        /*webpackChunkName: "ListPage" */ '@/modules/pokemon/pages/ListPage'
-      ),
+    redirect: '/pokemon',
   },
   {
-    path: '/about',
+    path: '/pokemon',
+    name: 'pokemon',
     component: () =>
       import(
-        /*webpackChunkName: "AboutPage" */ '@/modules/pokemon/pages/AboutPage'
+        /*webpackChunkName: "PokemonLayout" */ '@/modules/pokemon/layouts/PokemonLayout'
       ),
+    children: [
+      {
+        path: 'home',
+        name: 'pokemon-home',
+        component: () =>
+          import(
+            /*webpackChunkName: "ListPage" */ '@/modules/pokemon/pages/ListPage'
+          ),
+      },
+      {
+        path: 'about',
+        name: 'pokemon-about',
+        component: () =>
+          import(
+            /*webpackChunkName: "AboutPage" */ '@/modules/pokemon/pages/AboutPage'
+          ),
+      },
+      {
+        path: 'pokemonid/:id',
+        name: 'pokemon-id',
+        component: () =>
+          import(
+            /*webpackChunkName: "PokemonPage" */ '@/modules/pokemon/pages/PokemonPage'
+          ),
+        props: (route) => {
+          // console.log( route )
+          // const { id }= route.params}
+          const id = Number(route.params.id);
+          // return isNaN(  Number(id) ) ?  { id: 1 }: {id : Number(id)}
+          return isNaN(id) ? { id: 1 } : { id };
+        },
+      },
+      {
+        path: '',
+        name: '/',
+        redirect: { name: 'pokemon-about' },
+      },
+    ],
   },
+
+  // DBZ
   {
-    path: '/:id',
-    name: 'pokemon-id',
+    path: '/dbz',
+    name: 'dbz',
     component: () =>
       import(
-        /*webpackChunkName: "PokemonPage" */ '@/modules/pokemon/pages/PokemonPage'
+        /*webpackChunkName: "DragonBallLayout" */ '@/modules/dbz/layouts/DragonBallLayout'
       ),
-    props: (route) => {
-      // console.log( route )
-      // const { id }= route.params}
-      const id = Number( route.params.id );
-      // return isNaN(  Number(id) ) ?  { id: 1 }: {id : Number(id)}
-      return isNaN(id) ? { id: 1 } : { id };
-    },
+    children: [
+      {
+        path: 'characters',
+        name: 'dbz-characters',
+        component: () =>
+          import(
+            /*webpackChunkName: "CharacterPage" */ '@/modules/dbz/pages/Characters'
+          ),
+      },
+      {
+        path: 'about',
+        name: 'dbz-about',
+        component: () =>
+          import(
+            /*webpackChunkName: "AboutPage" */ '@/modules/dbz/pages/About'
+          ),
+      },
+
+      {
+        path: '',
+        name: '/',
+        redirect: { name: 'dbz-characters' },
+      },
+    ],
   },
+
   {
     path: '/:pathMatch(.*)*',
     component: () =>
       import(
-        /*webpackChunkName: "NoPageFound" */ '../modules/share/pages/NoPageFound'
+        /*webpackChunkName: "NoPageFound" */ '../modules/shared/pages/NoPageFound'
       ),
   },
 ];

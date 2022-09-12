@@ -1,6 +1,6 @@
  <template>
     <!-- <h1>Pokemon: <span>{{ id }}</span></h1> -->
-    <h1>Pokemon: <span>{{ $route.params.id }}</span></h1>
+    <h1>Pokemon: <span>#{{ id }}</span></h1>
 
     <div v-if="pokemon">
         <img :src="pokemon.sprites.front_default" :alt="pokemon.name">
@@ -21,6 +21,7 @@ export default {
 
     data() {
         return {
+            // id: this.$route.params.id,
             pokemon: null
         }
     },
@@ -28,10 +29,9 @@ export default {
     created() {
 
         //   const { id }= this.$route.params
-
         //   console.log(id)
         //   this.id = id
-
+        //   console.log( this.$attrs
         this.getPokemon()
 
     },
@@ -56,7 +56,7 @@ export default {
     },
     watch: {
         id() {
-            console.log(this.id)
+            // console.log(this.id)
             this.getPokemon()
         }
     }

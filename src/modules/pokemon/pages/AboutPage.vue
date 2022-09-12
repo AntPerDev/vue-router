@@ -1,7 +1,7 @@
 <template>
     <h1>About Page</h1>
     <hr>
-    <!-- <h2>{{name}}</h2> -->
+    <h2>{{name}}</h2>
     <button @click="onChangeName">Cambiar nombre</button>
 </template>
 <script>
@@ -18,7 +18,7 @@ export default {
 
     methods: {
         onChangeName() {
-            console.log('Se cambiará el nombre a Mari');
+            // console.log('Se cambiará el nombre a Mari');
             this.name = " Mari ";
         }
     },
