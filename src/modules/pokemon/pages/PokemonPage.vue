@@ -32,6 +32,8 @@ export default {
         //   console.log(id)
         //   this.id = id
         //   console.log( this.$attrs
+        // console.log(this.$route);
+        
         this.getPokemon()
 
     },

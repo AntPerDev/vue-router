@@ -5,49 +5,40 @@ const routes = [
     path: '/',
     redirect: '/pokemon',
   },
+
   {
     path: '/pokemon',
     name: 'pokemon',
     component: () =>
       import(
-        /*webpackChunkName: "PokemonLayout" */ '@/modules/pokemon/layouts/PokemonLayout'
-      ),
+        /*webpackChunkName: "PokemonLayout" */ '@/modules/pokemon/layouts/PokemonLayout'),
     children: [
       {
         path: 'home',
         name: 'pokemon-home',
         component: () =>
-          import(
-            /*webpackChunkName: "ListPage" */ '@/modules/pokemon/pages/ListPage'
-          ),
+          import(/*webpackChunkName: "ListPage" */ '@/modules/pokemon/pages/ListPage'),
       },
       {
         path: 'about',
         name: 'pokemon-about',
         component: () =>
-          import(
-            /*webpackChunkName: "AboutPage" */ '@/modules/pokemon/pages/AboutPage'
-          ),
+          import(/*webpackChunkName: "AboutPage" */ '@/modules/pokemon/pages/AboutPage'),
       },
       {
         path: 'pokemonid/:id',
         name: 'pokemon-id',
         component: () =>
-          import(
-            /*webpackChunkName: "PokemonPage" */ '@/modules/pokemon/pages/PokemonPage'
-          ),
+          import(/*webpackChunkName: "PokemonPage" */ '@/modules/pokemon/pages/PokemonPage'),
         props: (route) => {
-          // console.log( route )
-          // const { id }= route.params}
           const id = Number(route.params.id);
-          // return isNaN(  Number(id) ) ?  { id: 1 }: {id : Number(id)}
           return isNaN(id) ? { id: 1 } : { id };
         },
       },
       {
         path: '',
         name: '/',
-        redirect: { name: 'pokemon-about' },
+        redirect: { name: 'pokemon-about' }
       },
     ],
   },
@@ -81,7 +72,7 @@ const routes = [
       {
         path: '',
         name: '/',
-        redirect: { name: 'dbz-characters' },
+        redirect: { name: 'dbz-characters' }
       },
     ],
   },
@@ -96,9 +87,46 @@ const routes = [
 ];
 
 const router = createRouter({
-  // 4. Provide the history implementation to use. We are using the hash history for simplicity here.
   history: createWebHashHistory(),
   routes, // short for `routes: routes`
 });
+
+
+//Guard global - sincrono
+// router.beforeEach((to, from, next )=>{
+// console.log( {to, from, next })
+
+// const random = Math.random()*100
+// console.log(random);  
+// if (random > 50 ) {
+// console.log('Autenticado')
+// next()
+// } else {
+// console.log(random,'bloqueado por el beforeEach Guard');
+// next({name: 'pokemon-home'})
+// }   
+
+// next()
+// })
+
+const canAccess = () => {
+  return new Promise( resolve => {
+    const random = Math.random() * 100
+    if (random > 50) {
+      console.log('Autenticado - canAccess')
+      resolve(true)
+    } else {
+      console.log(random, 'bloqueado por el beforeEach Guard - canAccess');
+      resolve(false)
+    }
+  })
+}
+
+router.beforeEach( async(to,from,next)=>{
+
+  const authorized = await canAccess()
+
+  authorized ? next() : next({name: 'pokemon-home'});
+})
 
 export default router;

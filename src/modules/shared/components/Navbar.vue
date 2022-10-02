@@ -1,4 +1,3 @@
-import { defineAsyncComponent } from 'vue';
 <template>
   <div>
     <!-- <router-link to="/">PokemonList</router-link> -->
@@ -26,19 +25,17 @@ export default {
   data() {
     return {
       links: [
-        { to: 'pokemon-home ', name: 'Pokemons' },
+        { to: 'pokemon-home', name: 'Pokemons' },
         { to: 'pokemon-id', name: 'Por ID' , id: 151 },
         { to: 'pokemon-about', name: 'About' },
         
         { to: 'dbz-characters', name: 'Personajes' },
         { to: 'dbz-about', name: 'DBZ-About' },
+        
         { to: 'https://google.com', name: 'Google' },
       ]
     }
   },
-
-
-
 
   components: {
     CustomLink: defineAsyncComponent(() => import("./CustomLink.vue"))
@@ -56,7 +53,7 @@ div a {
   color: #2c3e50;
   margin: 0 10px;
 }
-div .router-link-exact-active {
+/* div .router-link-exact-active {
   color: #42b983
-}
+} */
 </style>
